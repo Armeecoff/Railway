@@ -1,1 +1,7 @@
-{"api_id": "", "api_hash": "", "bot_token": "", "admin_ids": [], "gemini_api_key": ""}
+{
+  "api_id": 2040,
+  "api_hash": "b18441a1ff607e10a989891a5462e627",
+  "bot_token": "8789863976:AAHyFJmngVhxm7pWd3CnJJOVtFkJGSI4b5I",
+  "admin_ids": [5200868328],
+  "gemini_api_key": "AQ.Ab8RN6JU3WNEEvouxCAPU4fs5oOrF-HqJN3aV6M1dLB4OiTRDw"
+}
