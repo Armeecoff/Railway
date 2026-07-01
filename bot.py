@@ -835,10 +835,22 @@ async def handle_any(message: Message, state: FSMContext, bot: Bot):
 # ═══════════════════════════════════════════════════════════════
 
 async def run_bot():
+    # ── ДИАГНОСТИКА (показывает что Railway видит) ──────────────────
+    _original_print("── ENV DIAGNOSTIC ──")
+    _original_print(f"  RAILWAY_ENVIRONMENT : {os.environ.get('RAILWAY_ENVIRONMENT', '<не задан>')}")
+    _original_print(f"  RAILWAY_ENVIRONMENT_NAME: {os.environ.get('RAILWAY_ENVIRONMENT_NAME', '<не задан>')}")
+    token_env = os.environ.get("BOT_TOKEN", "")
+    _original_print(f"  BOT_TOKEN (env)     : {'✅ задан (' + str(len(token_env)) + ' симв.)' if token_env else '❌ ПУСТО'}")
+    _original_print(f"  API_ID (env)        : {os.environ.get('API_ID', '<не задан>')}")
+    _original_print("────────────────────")
+    # ────────────────────────────────────────────────────────────────
+
     bot_token, admin_ids, gemini_key = get_bot_settings()
 
     # Railway/production: токен берётся из переменных окружения — интерактивный ввод не нужен
-    is_interactive = os.environ.get("RAILWAY_ENVIRONMENT") is None and os.environ.get("CI") is None
+    is_railway = (os.environ.get("RAILWAY_ENVIRONMENT") is not None
+                  or os.environ.get("RAILWAY_ENVIRONMENT_NAME") is not None)
+    is_interactive = not is_railway and os.environ.get("CI") is None
 
     if not bot_token and is_interactive:
         _original_print("\n" + "=" * 50)
