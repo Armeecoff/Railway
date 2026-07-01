@@ -153,8 +153,9 @@ def save_config(cfg: dict):
 
 def get_api_credentials() -> Tuple[int, str]:
     cfg = load_config()
-    api_id = cfg.get("api_id")
-    api_hash = cfg.get("api_hash")
+    # Env-переменные имеют приоритет (для Railway/хостинга)
+    api_id = os.environ.get("API_ID") or cfg.get("api_id")
+    api_hash = os.environ.get("API_HASH") or cfg.get("api_hash")
     if not api_id or not api_hash:
         print(f"{C.Y}⚠ Первый запуск — нужны API_ID и API_HASH{C.RST}")
         print(f"{C.DIM}  Получить: https://my.telegram.org/apps{C.RST}")
