@@ -101,15 +101,19 @@ def save_config(cfg: dict):
 
 def get_bot_settings():
     cfg = load_config()
-    bot_token = cfg.get("bot_token", os.environ.get("BOT_TOKEN", ""))
-    raw_ids = cfg.get("admin_ids", os.environ.get("ADMIN_IDS", ""))
+    # Env-переменные имеют ПРИОРИТЕТ над config.json
+    # (важно для Railway, где config.json может быть пустым шаблоном)
+    bot_token = os.environ.get("BOT_TOKEN") or cfg.get("bot_token") or ""
+    gemini_key = os.environ.get("GEMINI_API_KEY") or cfg.get("gemini_api_key") or ""
+
+    # admin_ids: env-переменная или config.json
+    raw_ids = os.environ.get("ADMIN_IDS") or cfg.get("admin_ids") or ""
     if isinstance(raw_ids, list):
         admin_ids = [int(x) for x in raw_ids if str(x).isdigit()]
     elif isinstance(raw_ids, str) and raw_ids:
         admin_ids = [int(x.strip()) for x in raw_ids.split(",") if x.strip().isdigit()]
     else:
         admin_ids = []
-    gemini_key = cfg.get("gemini_api_key", os.environ.get("GEMINI_API_KEY", ""))
     return bot_token, admin_ids, gemini_key
 
 
